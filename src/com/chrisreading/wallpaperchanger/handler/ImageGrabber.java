@@ -1,36 +1,78 @@
 package com.chrisreading.wallpaperchanger.handler;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import org.json.JSONObject;
 
-import com.chrisreading.wallpaperchanger.model.Image;
-
 public class ImageGrabber {
 	
-	private String baseLink = "http://reddit.com/r/earthporn";
-	private List<String> subreddits;
-	private Queue<Image> images;
+	private String baseLink = "https://www.reddit.com/r/earthporn/hot.json";
+	private String USER_AGENT = "WallpaperChanger"; // reddit needs this
 	
 	public ImageGrabber() { }
-	
-	public ImageGrabber(Queue<Image> images, List<String> subreddits) {
-		this.images = new LinkedList<Image>();
-		this.subreddits = new ArrayList<String>();
-	}
 	
 	public List<String> getImageLinks() {
 		List<String> imageLinks = new ArrayList<String>();
 		
-		JSONObject obj = new JSONObject(baseLink);
+		try {
+			String jsonString = readJSONFromURL(baseLink);
+			JSONObject jobj = new JSONObject(jsonString);
+			
+			// loop 26 times (26 posts per page)
+			for(int i = 0; i < 26; i++) {
+				String link = (jobj.getJSONObject("data").getJSONArray("children").getJSONObject(i).getJSONObject("data").getString("url"));
+				if(link.contains(".jpg") | link.contains(".jpeg") | link.contains(".png"))
+					imageLinks.add(link);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return imageLinks;
-		
 	}
 	
-	
+	/**
+	 * Reads the json file from the given url
+	 */
+	private String readJSONFromURL(String urlString) {
+		System.out.println("Reading JSON from " + urlString);
+		StringBuilder sb = new StringBuilder();
+		URLConnection uc = null;
+		InputStreamReader in = null;
+		
+		try {
+			URL url = new URL(urlString);
+			uc = url.openConnection();
+			
+			Thread.sleep(2000); // to comply with reddit's rate-limiting rules
+			uc.setRequestProperty("User-Agent", USER_AGENT); // ^ same here
+			
+			if(uc != null)
+				uc.setReadTimeout(60 * 1000);
+			
+			if(uc != null && uc.getInputStream() != null) {
+				in = new InputStreamReader(uc.getInputStream(),Charset.defaultCharset());
+				BufferedReader br = new BufferedReader(in);
+				if(br != null) {
+					int cp;
+					while((cp = br.read()) != -1) {
+						sb.append((char) cp);
+					}
+					br.close();
+				}
+			}
+		in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return sb.toString();
+	}
 
 }

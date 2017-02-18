@@ -13,8 +13,8 @@ public class WallpaperChanger {
 		
 		// testing
 		ImageGrabber ig = new ImageGrabber();
-		for(String url : ig.getImageLinks()) {
-			System.out.println(url);
+		for(String str : ig.getImageLinks()) {
+			System.out.println(str);
 		}
 	}
 
