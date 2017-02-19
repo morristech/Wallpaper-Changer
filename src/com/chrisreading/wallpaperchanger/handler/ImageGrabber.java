@@ -16,32 +16,36 @@ import org.json.JSONObject;
 public class ImageGrabber {
 	
 	private String USER_AGENT = "WallpaperChanger"; // reddit needs this
-	private String baseLink;
+	private String baseLink = "https://reddit.com/r/";
+	private String subreddit; // subreddit that will be downloaded from
 	private String fullLink;
 	
+	private List<String> imageLinks;
+	
 	public ImageGrabber(String subreddit) { 
-		USER_AGENT = "WallpaperChanger";
+		this.subreddit = subreddit;
 		baseLink = "https://reddit.com/r/";
 		fullLink = baseLink + subreddit + "/hot.json";
+		imageLinks = new ArrayList<String>();
+		
+		/*
+		 * Scan through the subreddit for direct links to images
+		 */
+		String jsonString = readJSONFromURL(fullLink);
+		JSONObject jobj = new JSONObject(jsonString);
+		
+		for(int i = 0; i < 26; i++) {
+			String link = (jobj.getJSONObject("data").getJSONArray("children").getJSONObject(i).getJSONObject("data").getString("url"));
+			if(link.contains(".jpg") | link.contains(".jpeg") | link.contains(".png"))
+				imageLinks.add(link);
+		}
+	}
+	
+	public String getSubreddit() {
+		return subreddit;
 	}
 	
 	public List<String> getImageLinks() {
-		List<String> imageLinks = new ArrayList<String>();
-		
-		try {
-			String jsonString = readJSONFromURL(fullLink);
-			JSONObject jobj = new JSONObject(jsonString);
-			
-			// loop 26 times (26 posts per page)
-			for(int i = 0; i < 26; i++) {
-				String link = (jobj.getJSONObject("data").getJSONArray("children").getJSONObject(i).getJSONObject("data").getString("url"));
-				if(link.contains(".jpg") | link.contains(".jpeg") | link.contains(".png"))
-					imageLinks.add(link);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 		return imageLinks;
 	}
 	
