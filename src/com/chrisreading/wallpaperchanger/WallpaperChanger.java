@@ -1,6 +1,8 @@
 package com.chrisreading.wallpaperchanger;
 
-import com.chrisreading.wallpaperchanger.handler.ImageGrabber;
+import java.io.IOException;
+
+import com.chrisreading.wallpaperchanger.manager.ImageListManager;
 
 /**
  * Inits the front & backend
@@ -11,10 +13,12 @@ public class WallpaperChanger {
 		// TODO: init backend
 		// TODO: init frontend
 		
-		// testing
-		ImageGrabber ig = new ImageGrabber("wallpapers");
-		for(String str : ig.getImageLinks()) {
-			System.out.println(str);
+		ImageListManager list = new ImageListManager("earthporn");
+		try {
+			list.init();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
