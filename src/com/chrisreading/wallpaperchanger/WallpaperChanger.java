@@ -12,7 +12,7 @@ public class WallpaperChanger {
 		// TODO: init frontend
 		
 		// testing
-		ImageGrabber ig = new ImageGrabber();
+		ImageGrabber ig = new ImageGrabber("wallpapers");
 		for(String str : ig.getImageLinks()) {
 			System.out.println(str);
 		}

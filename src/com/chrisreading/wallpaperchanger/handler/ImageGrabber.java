@@ -10,18 +10,26 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+/**
+ * Parses through a json file on a certain subreddit, and grab direct links to images.
+ */
 public class ImageGrabber {
 	
-	private String baseLink = "https://www.reddit.com/r/earthporn/hot.json";
 	private String USER_AGENT = "WallpaperChanger"; // reddit needs this
+	private String baseLink;
+	private String fullLink;
 	
-	public ImageGrabber() { }
+	public ImageGrabber(String subreddit) { 
+		USER_AGENT = "WallpaperChanger";
+		baseLink = "https://reddit.com/r/";
+		fullLink = baseLink + subreddit + "/hot.json";
+	}
 	
 	public List<String> getImageLinks() {
 		List<String> imageLinks = new ArrayList<String>();
 		
 		try {
-			String jsonString = readJSONFromURL(baseLink);
+			String jsonString = readJSONFromURL(fullLink);
 			JSONObject jobj = new JSONObject(jsonString);
 			
 			// loop 26 times (26 posts per page)
