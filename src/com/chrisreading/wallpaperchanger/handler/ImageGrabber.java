@@ -16,37 +16,54 @@ import org.json.JSONObject;
 public class ImageGrabber {
 	
 	private String USER_AGENT = "WallpaperChanger"; // reddit needs this
-	private String baseLink = "https://reddit.com/r/";
-	private String subreddit; // subreddit that will be downloaded from
-	private String fullLink;
 	
-	private List<String> imageLinks;
+	private List<String> subreddits; // subreddits to scan through
+	private List<String> imageLinks; // links to all images found
 	
-	public ImageGrabber(String subreddit) { 
-		this.subreddit = subreddit;
-		baseLink = "https://reddit.com/r/";
-		fullLink = baseLink + subreddit + "/hot.json";
+	public ImageGrabber() { 
+		subreddits = new ArrayList<String>();
 		imageLinks = new ArrayList<String>();
-		
-		/*
-		 * Scan through the subreddit for direct links to images
-		 */
-		String jsonString = readJSONFromURL(fullLink);
-		JSONObject jobj = new JSONObject(jsonString);
-		
-		for(int i = 0; i < 26; i++) {
-			String link = (jobj.getJSONObject("data").getJSONArray("children").getJSONObject(i).getJSONObject("data").getString("url"));
-			if(link.contains(".jpg") | link.contains(".jpeg") | link.contains(".png"))
-				imageLinks.add(link);
+	}
+	
+	/*
+	 * For each subreddit specified, do a search
+	 */
+	public void look() {
+		for(String subreddit : subreddits) {
+			System.out.println("Scanning: " + subreddit);
+			
+			// set the address
+			String baseLink = "https://reddit.com/r/";
+			String fullLink = baseLink + subreddit + "/hot.json";
+			
+			// now perform a scan for this subreddit
+			String jsonString = readJSONFromURL(fullLink);
+			JSONObject jobj = new JSONObject(jsonString);
+			
+			// get 5 links for now
+			for(int i = 0; i < 5; i++) {
+				String link = (jobj.getJSONObject("data").getJSONArray("children").getJSONObject(i).getJSONObject("data").getString("url"));
+				if(link.contains(".jpg") | link.contains(".jpeg") | link.contains(".png"))
+					imageLinks.add(link);
+			}
 		}
 	}
 	
-	public String getSubreddit() {
-		return subreddit;
+	public void addSubreddit(String subreddit) {
+		subreddits.add(subreddit);
+	}
+	
+	public void addSubreddits(String[] subreddits) {
+		for(String s : subreddits)
+			this.subreddits.add(s);
 	}
 	
 	public List<String> getImageLinks() {
 		return imageLinks;
+	}
+	
+	public List<String> getSubreddits() {
+		return subreddits;
 	}
 	
 	/**
