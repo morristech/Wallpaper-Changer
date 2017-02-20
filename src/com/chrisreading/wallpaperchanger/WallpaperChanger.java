@@ -2,6 +2,8 @@ package com.chrisreading.wallpaperchanger;
 
 import java.io.IOException;
 
+import com.chrisreading.wallpaperchanger.handler.ImageGrabber;
+import com.chrisreading.wallpaperchanger.manager.BackgroundManager;
 import com.chrisreading.wallpaperchanger.manager.ImageListManager;
 
 /**
@@ -10,16 +12,20 @@ import com.chrisreading.wallpaperchanger.manager.ImageListManager;
 public class WallpaperChanger {
 	
 	public static void main(String[] args) {
-		// TODO: init backend
-		// TODO: init frontend
+		ImageGrabber grabber = new ImageGrabber();
+		grabber.addSubreddits(new String[] {"earthporn", "wallpapers"});
+		grabber.look();
 		
-		ImageListManager list = new ImageListManager("earthporn");
+		ImageListManager ilm = new ImageListManager(grabber);
+		
 		try {
-			list.init();
+			ilm.startDownloads();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		BackgroundManager bm = new BackgroundManager(ilm.getImages(), 1);
+		bm.init();
 	}
 
 }
