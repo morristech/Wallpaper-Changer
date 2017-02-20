@@ -10,12 +10,12 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import com.chrisreading.wallpaperchanger.utility.Vars;
+
 /**
  * Parses through a json file on a certain subreddit, and grab direct links to images.
  */
 public class ImageGrabber {
-	
-	private String USER_AGENT = "WallpaperChanger"; // reddit needs this
 	
 	private List<String> subreddits; // subreddits to scan through
 	private List<String> imageLinks; // links to all images found
@@ -80,7 +80,7 @@ public class ImageGrabber {
 			uc = url.openConnection();
 			
 			Thread.sleep(2000); // to comply with reddit's rate-limiting rules
-			uc.setRequestProperty("User-Agent", USER_AGENT); // ^ same here
+			uc.setRequestProperty("User-Agent", Vars.USER_AGENT); // ^ same here
 			
 			if(uc != null)
 				uc.setReadTimeout(60 * 1000);
