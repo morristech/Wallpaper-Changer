@@ -1,4 +1,4 @@
-package com.chrisreading.wallpaperchanger.manager;
+package com.chrisreading.wallpaperchanger.handler;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.chrisreading.wallpaperchanger.handler.ChangeHandler;
 import com.chrisreading.wallpaperchanger.model.Image;
 
 /**
@@ -39,6 +38,7 @@ public class BackgroundManager {
 					System.out.println("Changed wallpaper");	
 				} else {
 					System.out.println("Out of wallpapers, program exiting.");
+					System.exit(0);
 				}
 			}
 		}, duration * 60 * 1000, duration * 60 * 1000);
