@@ -1,24 +1,24 @@
-package com.chrisreading.wallpaperchanger.manager;
+package com.chrisreading.wallpaperchanger.handler;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chrisreading.wallpaperchanger.handler.ImageGrabber;
 import com.chrisreading.wallpaperchanger.model.Image;
 import com.chrisreading.wallpaperchanger.utility.DownloadUtility;
-import com.chrisreading.wallpaperchanger.utility.FileLocations;
+import com.chrisreading.wallpaperchanger.utility.OSUtility;
+import com.chrisreading.wallpaperchanger.utility.Vars;
 
 /**
- * Uses the list of links provided by ImageGrabber, downloads them.
+ * Downloads image links from ImageGrabber
  */
-public class ImageListManager {
+public class DownloadManager {
 	
 	private List<Image> images;
 	private ImageGrabber ig;
 	
-	public ImageListManager(ImageGrabber ig) {
+	public DownloadManager(ImageGrabber ig) {
 		this.ig = ig;
 		images = new ArrayList<Image>();
 	}
@@ -28,7 +28,15 @@ public class ImageListManager {
 	 * @throws IOException
 	 */
 	public void startDownloads() throws IOException {
-		File downloadLoc = new File(FileLocations.DOWNLOAD_FOLDER);
+		File downloadLoc = null;
+		
+		// find out where to save images
+		if(OSUtility.isWindows())
+			downloadLoc = new File(Vars.DOWNLOAD_FOLDER_WINDOWS);
+		else if(OSUtility.isMac())
+			downloadLoc = new File(Vars.DOWNLOAD_FOLDER_MAC);
+		else if(OSUtility.isLinux())
+			downloadLoc = new File(Vars.DOWNLOAD_FOLDER_LINUX);
 		
 		// check if download folder exists, create if doesn't
 		if(!downloadLoc.exists())
