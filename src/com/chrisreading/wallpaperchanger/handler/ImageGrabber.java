@@ -28,7 +28,7 @@ public class ImageGrabber {
 	/*
 	 * For each subreddit specified, do a search
 	 */
-	public void look() {
+	public void look(int linksToGrab) {
 		for(String subreddit : subreddits) {
 			System.out.println("Scanning: " + subreddit);
 			
@@ -40,8 +40,8 @@ public class ImageGrabber {
 			String jsonString = readJSONFromURL(fullLink);
 			JSONObject jobj = new JSONObject(jsonString);
 			
-			// get 5 links for now
-			for(int i = 0; i < 5; i++) {
+			// set a maximum of 25
+			for(int i = 0; i < linksToGrab; i++) {
 				String link = (jobj.getJSONObject("data").getJSONArray("children").getJSONObject(i).getJSONObject("data").getString("url"));
 				if(link.contains(".jpg") | link.contains(".jpeg") | link.contains(".png"))
 					imageLinks.add(link);
