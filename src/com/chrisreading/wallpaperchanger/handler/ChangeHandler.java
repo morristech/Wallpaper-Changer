@@ -1,5 +1,6 @@
 package com.chrisreading.wallpaperchanger.handler;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import com.chrisreading.wallpaperchanger.utility.OSUtility;
@@ -14,16 +15,27 @@ import com.sun.jna.win32.W32APITypeMapper;
  */
 public class ChangeHandler {
 	
-	public void change(String path) {
+	public void change(String path) throws IOException {
 		if(OSUtility.isWindows()) {
 			SPI.INSTANCE.SystemParametersInfo(
 					new UINT_PTR(SPI.SPI_SETDESKWALLPAPER), 
 					new UINT_PTR(0), 
 					path, 
 					new UINT_PTR(SPI.SPIF_UPDATEINIFILE | SPI.SPIF_SENDWININICHANGE));	
+		} else if(OSUtility.isMac()) {
+			// I have no idea if this works, I don't own a mac
+			String as[] = {
+					"osascript",
+					"-e", "tell application \"Finder\"",
+					"-e", "set desktop picture to POSIX file \"" + path + "\"",
+					"-e", "end tell"
+			};
+			
+			Runtime runtime = Runtime.getRuntime();
+			Process process = runtime.exec(as);
 		}
 		
-		// TODO: create function for linux and mac
+		// TODO: create function for linux
 	}
 	
 	/**

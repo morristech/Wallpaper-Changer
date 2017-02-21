@@ -1,5 +1,6 @@
 package com.chrisreading.wallpaperchanger.handler;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -34,7 +35,12 @@ public class BackgroundManager {
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				if(!images.isEmpty()) {
-					ch.change(images.poll().getFile().getAbsolutePath());
+					try {
+						ch.change(images.poll().getFile().getAbsolutePath());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
 					System.out.println("Changed wallpaper");	
 				} else {
 					System.out.println("Out of wallpapers, program exiting.");
