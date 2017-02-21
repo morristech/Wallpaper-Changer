@@ -14,7 +14,7 @@ public class Image {
 	
 	private int width, height;
 	private File imageFile;
-	private BufferedImage bufImage; // not sure if this will be used, but useful anyways
+	private BufferedImage bufImage;
 	
 	public Image(File file) {
 		this.imageFile = file;
@@ -24,6 +24,9 @@ public class Image {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		this.width = bufImage.getWidth();
+		this.height = bufImage.getHeight();
 	}
 	
 	/* GETTER & SETTERS */
