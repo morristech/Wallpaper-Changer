@@ -17,12 +17,7 @@ public class WallpaperChanger {
 		grabber.look();
 		
 		DownloadManager dm = new DownloadManager(grabber);
-		
-		try {
-			dm.startDownloads();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		dm.startDownloads();		
 		
 		BackgroundManager bm = new BackgroundManager(dm.getImages(), 1);
 		bm.init();

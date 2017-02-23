@@ -27,7 +27,7 @@ public class DownloadManager {
 	 * Downloads images from ImageGrabber
 	 * @throws IOException
 	 */
-	public void startDownloads() throws IOException {
+	public void startDownloads() {
 		File downloadLoc = null;
 		
 		// find out where to save images
@@ -46,7 +46,12 @@ public class DownloadManager {
 		for(int i = 0; i < ig.getImageLinks().size(); i++) {
 			String link = ig.getImageLinks().get(i);
 			System.out.println("Downloading: " + link);
-			images.add(new Image(DownloadUtility.download(link, downloadLoc.getAbsolutePath() + "\\" + i + ".jpg")));
+			
+			try {
+				images.add(new Image(DownloadUtility.download(link, downloadLoc.getAbsolutePath() + "\\" + i + ".jpg")));	
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
