@@ -30,7 +30,7 @@ public class BackgroundManager {
 	 * Changes the wallpaper set on an interval
 	 */
 	public void init() {
-		System.out.println("Started timer");
+		System.out.println("Started " + duration + " minute timer.");
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
@@ -41,13 +41,13 @@ public class BackgroundManager {
 						e.printStackTrace();
 					}
 					
-					System.out.println("Changed wallpaper");	
+					System.out.println("Changed wallpaper");
 				} else {
 					System.out.println("Out of wallpapers, program exiting.");
 					System.exit(0);
 				}
 			}
-		}, duration * 60 * 1000, duration * 60 * 1000);
+		}, 0, duration * 60 * 1000);
 	}
 	
 }
