@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
-
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="310.0" prefWidth="371.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chrisreading.wallpaperchanger.gui.controller.RootController.java">
+   <center>
+      <AnchorPane prefHeight="479.0" prefWidth="586.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="textField" layoutX="14.0" layoutY="14.0" />
+            <Button fx:id="addBtn" layoutX="171.0" layoutY="14.0" mnemonicParsing="false" onAction="#onAdd" text="+" />
+            <ListView fx:id="listView" layoutX="14.0" layoutY="45.0" prefHeight="200.0" prefWidth="183.0" />
+            <Button fx:id="startBtn" layoutX="282.0" layoutY="27.0" mnemonicParsing="false" onAction="#onStart" prefHeight="25.0" prefWidth="67.0" text="Start" />
+            <Button fx:id="stopBtn" layoutX="281.0" layoutY="65.0" mnemonicParsing="false" onAction="#onStop" prefHeight="25.0" prefWidth="70.0" text="Stop/Exit" />
+         </children>
+      </AnchorPane>
+   </center>
 </BorderPane>
