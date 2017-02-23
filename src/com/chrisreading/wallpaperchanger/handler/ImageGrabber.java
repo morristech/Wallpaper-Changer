@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.chrisreading.wallpaperchanger.utility.Vars;
@@ -28,7 +29,7 @@ public class ImageGrabber {
 	/*
 	 * For each subreddit specified, do a search
 	 */
-	public void look(int linksToGrab) {
+	public void look() {
 		for(String subreddit : subreddits) {
 			System.out.println("Scanning: " + subreddit);
 			
@@ -38,15 +39,18 @@ public class ImageGrabber {
 			
 			// now perform a scan for this subreddit
 			String jsonString = readJSONFromURL(fullLink);
-			JSONObject jobj = new JSONObject(jsonString);
+			JSONObject jobj = new JSONObject(jsonString);		
+			JSONArray children = jobj.getJSONObject("data").getJSONArray("children");
 			
 			// set a maximum of 25
-			for(int i = 0; i < linksToGrab; i++) {
-				String link = (jobj.getJSONObject("data").getJSONArray("children").getJSONObject(i).getJSONObject("data").getString("url"));
+			for(int i = 0; i < children.length(); i++) {
+				String link = (children.getJSONObject(i).getJSONObject("data").getString("url"));
 				if(link.contains(".jpg") | link.contains(".jpeg") | link.contains(".png"))
 					imageLinks.add(link);
 			}
 		}
+		
+		System.out.println("Found " + imageLinks.size() + " images total");
 	}
 	
 	public void addSubreddit(String subreddit) {
