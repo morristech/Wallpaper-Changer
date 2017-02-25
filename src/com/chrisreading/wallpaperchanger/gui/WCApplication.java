@@ -9,7 +9,6 @@ import com.chrisreading.wallpaperchanger.utility.Vars;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -21,6 +20,7 @@ public class WCApplication extends Application {
 	
 	private Stage primaryStage;
 	private BorderPane rootLayout;
+	private RootController controller;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -39,8 +39,12 @@ public class WCApplication extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-		RootController controller = new RootController();
+		controller = new RootController();
 		controller.setApplication(this);
+	}
+	
+	public RootController getRootController() {
+		return controller;
 	}
 
 }

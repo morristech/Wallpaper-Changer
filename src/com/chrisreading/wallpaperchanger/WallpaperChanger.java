@@ -1,18 +1,17 @@
 package com.chrisreading.wallpaperchanger;
 
-import java.io.IOException;
-
 import com.chrisreading.wallpaperchanger.gui.WCApplication;
-import com.chrisreading.wallpaperchanger.handler.BackgroundManager;
-import com.chrisreading.wallpaperchanger.handler.DownloadManager;
 import com.chrisreading.wallpaperchanger.handler.ImageGrabber;
 
 import javafx.application.Application;
+import javafx.stage.Stage;
 
 /**
  * Inits the front & backend
  */
 public class WallpaperChanger {
+	
+	private WCApplication app;
 	
 	public static void main(String[] args) {
 	/*
@@ -29,5 +28,4 @@ public class WallpaperChanger {
 		
 		Application.launch(WCApplication.class, args);
 	}
-
 }
